@@ -34,7 +34,7 @@ public class FilesImplService implements IFilesService{
                 return cloud(multipartFile);
             default:
 
-                return null;
+                return local(multipartFile);
         }
 
     }
@@ -43,7 +43,7 @@ public class FilesImplService implements IFilesService{
 
         try {
             String response = filesDBService.addFile(multipartFile);
-            String url = "http://localhost:8080/file/download/"+response;
+            String url = "/download/"+response;
            return new FileUploadResponseDTO(multipartFile.getOriginalFilename(), url , multipartFile.getSize());
 
         }catch(Exception e){
@@ -55,7 +55,7 @@ public class FilesImplService implements IFilesService{
 
         String fileName = fileStorageService.storeFile(multipartFile);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("/download/")
                 .path(fileName)
                 .toUriString();
 
